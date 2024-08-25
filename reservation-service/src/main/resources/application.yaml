@@ -1,0 +1,8 @@
+quarkus:
+  http:
+    port: 8081
+  swagger-ui:
+    always-include: true
+  smallrye-graphql-client:
+    inventory:
+      url: http://localhost:8083/graphql
