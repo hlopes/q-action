@@ -33,7 +33,7 @@ public class ReservationResource {
 
   @GET
   @Path("availability")
-  public Collection<Car> availability(@RestQuery final LocalDate starDate, @RestQuery final LocalDate endDate) {
+  public Collection<Car> availability(@RestQuery final LocalDate startDate, @RestQuery final LocalDate endDate) {
     final var availableCars = inventoryClient.getAllCars();
 
     final var carById = new HashMap<Long, Car>();
@@ -43,7 +43,7 @@ public class ReservationResource {
     final var reservations = reservationsRepository.findAll();
 
     reservations.forEach(reservation -> {
-      if (reservation.isReserved(starDate, endDate)) {
+      if (reservation.isReserved(startDate, endDate)) {
         carById.remove(reservation.getCarId());
       }
     });
