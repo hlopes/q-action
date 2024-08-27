@@ -1,7 +1,6 @@
 package org.acme.reservation.inventory;
 
 import jakarta.inject.Singleton;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

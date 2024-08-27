@@ -1,10 +1,9 @@
 package org.acme.reservation.rental;
 
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,5 +13,4 @@ public class Rental {
   private final String userId;
   private final Long reservationId;
   private final LocalDate startDate;
-
 }

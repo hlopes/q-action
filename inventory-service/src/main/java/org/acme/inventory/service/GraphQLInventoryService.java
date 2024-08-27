@@ -1,20 +1,18 @@
 package org.acme.inventory.service;
 
 import jakarta.inject.Inject;
+import java.util.List;
+import java.util.Optional;
 import org.acme.inventory.model.Car;
 import org.acme.inventory.model.CarInventory;
 import org.eclipse.microprofile.graphql.GraphQLApi;
 import org.eclipse.microprofile.graphql.Mutation;
 import org.eclipse.microprofile.graphql.Query;
 
-import java.util.List;
-import java.util.Optional;
-
 @GraphQLApi
 public class GraphQLInventoryService {
 
-  @Inject
-  CarInventory carInventory;
+  @Inject CarInventory carInventory;
 
   @Query
   public List<Car> cars() {
@@ -31,7 +29,8 @@ public class GraphQLInventoryService {
     var cars = carInventory.getCars();
 
     Optional<Car> toBeRemoved =
-        cars.stream().filter(car -> car.getLicencePlateNumber().equals(licencePlateNumber))
+        cars.stream()
+            .filter(car -> car.getLicencePlateNumber().equals(licencePlateNumber))
             .findAny();
 
     return toBeRemoved.map(car -> carInventory.removeCar(car)).isPresent();

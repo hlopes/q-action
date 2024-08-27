@@ -5,6 +5,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashMap;
 import org.acme.reservation.inventory.Car;
 import org.acme.reservation.inventory.GraphQLInventoryClient;
 import org.acme.reservation.inventory.Reservation;
@@ -13,27 +16,21 @@ import org.acme.reservation.rental.RentalClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-
 @Path("reservation")
 public class ReservationResource {
 
-  @Inject
-  ReservationsRepository reservationsRepository;
+  @Inject ReservationsRepository reservationsRepository;
 
   @GraphQLClient("inventory")
   @Inject
   GraphQLInventoryClient inventoryClient;
 
-  @RestClient
-  @Inject
-  RentalClient rentalClient;
+  @RestClient @Inject RentalClient rentalClient;
 
   @GET
   @Path("availability")
-  public Collection<Car> availability(@RestQuery final LocalDate startDate, @RestQuery final LocalDate endDate) {
+  public Collection<Car> availability(
+      @RestQuery final LocalDate startDate, @RestQuery final LocalDate endDate) {
     final var availableCars = inventoryClient.getAllCars();
 
     final var carById = new HashMap<Long, Car>();
@@ -42,11 +39,12 @@ public class ReservationResource {
 
     final var reservations = reservationsRepository.findAll();
 
-    reservations.forEach(reservation -> {
-      if (reservation.isReserved(startDate, endDate)) {
-        carById.remove(reservation.getCarId());
-      }
-    });
+    reservations.forEach(
+        reservation -> {
+          if (reservation.isReserved(startDate, endDate)) {
+            carById.remove(reservation.getCarId());
+          }
+        });
 
     return carById.values();
   }

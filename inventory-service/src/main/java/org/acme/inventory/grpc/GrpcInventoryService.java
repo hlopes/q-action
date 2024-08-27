@@ -16,8 +16,7 @@ import org.acme.inventory.model.RemoveCarRequest;
 @GrpcService
 public class GrpcInventoryService implements InventoryService {
 
-  @Inject
-  CarInventory inventory;
+  @Inject CarInventory inventory;
 
   @Override
   public Uni<CarResponse> add(final InsertCarRequest request) {
@@ -27,27 +26,36 @@ public class GrpcInventoryService implements InventoryService {
 
     log.info("Persisted {}", savedCar);
 
-    return Uni.createFrom().item(
-        CarResponse.newBuilder().setLicencePlateNumber(savedCar.getLicencePlateNumber())
-            .setManufacturer(savedCar.getManufacturer()).setModel(savedCar.getModel())
-            .setId(savedCar.getId()).build());
+    return Uni.createFrom()
+        .item(
+            CarResponse.newBuilder()
+                .setLicencePlateNumber(savedCar.getLicencePlateNumber())
+                .setManufacturer(savedCar.getManufacturer())
+                .setModel(savedCar.getModel())
+                .setId(savedCar.getId())
+                .build());
   }
 
   @Override
   public Uni<CarResponse> remove(final RemoveCarRequest request) {
-    final var optionalCar = inventory.getCars().stream()
-        .filter(car -> car.getLicencePlateNumber().equals(request.getLicencePlateNumber()))
-        .findAny();
+    final var optionalCar =
+        inventory.getCars().stream()
+            .filter(car -> car.getLicencePlateNumber().equals(request.getLicencePlateNumber()))
+            .findAny();
 
     final var isCarRemoved = optionalCar.map(inventory::removeCar);
 
     if (isCarRemoved.isPresent()) {
       final var removedCar = optionalCar.get();
 
-      return Uni.createFrom().item(
-          CarResponse.newBuilder().setLicencePlateNumber(removedCar.getLicencePlateNumber())
-              .setManufacturer(removedCar.getManufacturer()).setModel(removedCar.getModel())
-              .setId(removedCar.getId()).build());
+      return Uni.createFrom()
+          .item(
+              CarResponse.newBuilder()
+                  .setLicencePlateNumber(removedCar.getLicencePlateNumber())
+                  .setManufacturer(removedCar.getManufacturer())
+                  .setModel(removedCar.getModel())
+                  .setId(removedCar.getId())
+                  .build());
     }
 
     return Uni.createFrom().nullItem();
@@ -56,20 +64,33 @@ public class GrpcInventoryService implements InventoryService {
   @Override
   public Multi<CarResponse> addMulti(final Multi<InsertCarRequest> requests) {
 
-    return requests.map(request -> {
-      final var car = buildCarFromCarRequest(request);
+    return requests
+        .map(
+            request -> {
+              final var car = buildCarFromCarRequest(request);
 
-      return inventory.addCar(car);
-    }).onItem().invoke(car -> {
-      log.info("### Persisted {}", car);
-    }).map(
-        savedCar -> CarResponse.newBuilder().setLicencePlateNumber(savedCar.getLicencePlateNumber())
-            .setManufacturer(savedCar.getManufacturer()).setModel(savedCar.getModel())
-            .setId(savedCar.getId()).build());
+              return inventory.addCar(car);
+            })
+        .onItem()
+        .invoke(
+            car -> {
+              log.info("### Persisted {}", car);
+            })
+        .map(
+            savedCar ->
+                CarResponse.newBuilder()
+                    .setLicencePlateNumber(savedCar.getLicencePlateNumber())
+                    .setManufacturer(savedCar.getManufacturer())
+                    .setModel(savedCar.getModel())
+                    .setId(savedCar.getId())
+                    .build());
   }
 
   private Car buildCarFromCarRequest(final InsertCarRequest request) {
-    return Car.builder().licencePlateNumber(request.getLicencePlateNumber())
-        .manufacturer(request.getManufacturer()).model(request.getModel()).build();
+    return Car.builder()
+        .licencePlateNumber(request.getLicencePlateNumber())
+        .manufacturer(request.getManufacturer())
+        .model(request.getModel())
+        .build();
   }
 }

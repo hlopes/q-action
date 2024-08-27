@@ -2,9 +2,8 @@ package org.acme.rental;
 
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.atomic.AtomicLong;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Path("/rental")

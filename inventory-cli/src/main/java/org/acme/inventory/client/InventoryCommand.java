@@ -16,7 +16,6 @@ public class InventoryCommand implements QuarkusApplication {
   @GrpcClient("inventory")
   InventoryService inventoryService;
 
-
   @Override
   public int run(final String... args) throws Exception {
     final String action = args.length > 0 ? args[0] : null;
@@ -38,19 +37,45 @@ public class InventoryCommand implements QuarkusApplication {
     return 1;
   }
 
-  private void addM(final String arg, final String arg1, final String arg2, final String arg3,
-      final String arg4, final String arg5) {
-    var result = inventoryService.addMulti(Multi.createFrom().items(
-        InsertCarRequest.newBuilder().setLicencePlateNumber(arg).setManufacturer(arg1)
-            .setModel(arg2).build(),
-        InsertCarRequest.newBuilder().setLicencePlateNumber(arg3).setManufacturer(arg4)
-            .setModel(arg5).build())).subscribe().asStream().findAny().isPresent();
+  private void addM(
+      final String arg,
+      final String arg1,
+      final String arg2,
+      final String arg3,
+      final String arg4,
+      final String arg5) {
+    var result =
+        inventoryService
+            .addMulti(
+                Multi.createFrom()
+                    .items(
+                        InsertCarRequest.newBuilder()
+                            .setLicencePlateNumber(arg)
+                            .setManufacturer(arg1)
+                            .setModel(arg2)
+                            .build(),
+                        InsertCarRequest.newBuilder()
+                            .setLicencePlateNumber(arg3)
+                            .setManufacturer(arg4)
+                            .setModel(arg5)
+                            .build()))
+            .subscribe()
+            .asStream()
+            .findAny()
+            .isPresent();
 
     System.out.println("RESULT " + result);
   }
 
   private void add(final String licencePlateNumber, final String manufacturer, final String model) {
-    inventoryService.add(InsertCarRequest.newBuilder().setLicencePlateNumber(licencePlateNumber)
-        .setManufacturer(manufacturer).setModel(model).build()).await().indefinitely();
+    inventoryService
+        .add(
+            InsertCarRequest.newBuilder()
+                .setLicencePlateNumber(licencePlateNumber)
+                .setManufacturer(manufacturer)
+                .setModel(model)
+                .build())
+        .await()
+        .indefinitely();
   }
 }
