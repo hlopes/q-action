@@ -12,7 +12,8 @@ import org.eclipse.microprofile.graphql.Query;
 @GraphQLApi
 public class GraphQLInventoryService {
 
-  @Inject CarInventory carInventory;
+  @Inject
+  CarInventory carInventory;
 
   @Query
   public List<Car> cars() {
@@ -28,10 +29,9 @@ public class GraphQLInventoryService {
   public boolean remove(String licencePlateNumber) {
     var cars = carInventory.getCars();
 
-    Optional<Car> toBeRemoved =
-        cars.stream()
-            .filter(car -> car.getLicencePlateNumber().equals(licencePlateNumber))
-            .findAny();
+    Optional<Car> toBeRemoved = cars.stream()
+        .filter(car -> car.getLicencePlateNumber().equals(licencePlateNumber))
+        .findAny();
 
     return toBeRemoved.map(car -> carInventory.removeCar(car)).isPresent();
   }

@@ -10,8 +10,8 @@ import org.acme.inventory.model.InventoryService;
 @QuarkusMain
 public class InventoryCommand implements QuarkusApplication {
 
-  private static final String USAGE =
-      "Usage: inventory <add>|<remove> " + "<licence plate number> <manufacturer> <model>";
+  private static final String USAGE = "Usage: inventory <add>|<remove> "
+      + "<licence plate number> <manufacturer> <model>";
 
   @GrpcClient("inventory")
   InventoryService inventoryService;
@@ -44,25 +44,24 @@ public class InventoryCommand implements QuarkusApplication {
       final String arg3,
       final String arg4,
       final String arg5) {
-    var result =
-        inventoryService
-            .addMulti(
-                Multi.createFrom()
-                    .items(
-                        InsertCarRequest.newBuilder()
-                            .setLicencePlateNumber(arg)
-                            .setManufacturer(arg1)
-                            .setModel(arg2)
-                            .build(),
-                        InsertCarRequest.newBuilder()
-                            .setLicencePlateNumber(arg3)
-                            .setManufacturer(arg4)
-                            .setModel(arg5)
-                            .build()))
-            .subscribe()
-            .asStream()
-            .findAny()
-            .isPresent();
+    var result = inventoryService
+        .addMulti(
+            Multi.createFrom()
+                .items(
+                    InsertCarRequest.newBuilder()
+                        .setLicencePlateNumber(arg)
+                        .setManufacturer(arg1)
+                        .setModel(arg2)
+                        .build(),
+                    InsertCarRequest.newBuilder()
+                        .setLicencePlateNumber(arg3)
+                        .setManufacturer(arg4)
+                        .setModel(arg5)
+                        .build()))
+        .subscribe()
+        .asStream()
+        .findAny()
+        .isPresent();
 
     System.out.println("RESULT " + result);
   }

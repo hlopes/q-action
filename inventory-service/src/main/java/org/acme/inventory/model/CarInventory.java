@@ -34,21 +34,19 @@ public class CarInventory {
   }
 
   private void initialData() {
-    final Car mazda =
-        Car.builder()
-            .id(ids.incrementAndGet())
-            .manufacturer("Mazda")
-            .model("6")
-            .licencePlateNumber("ABC123")
-            .build();
+    final Car mazda = Car.builder()
+        .id(ids.incrementAndGet())
+        .manufacturer("Mazda")
+        .model("6")
+        .licencePlateNumber("ABC123")
+        .build();
 
-    final Car ford =
-        Car.builder()
-            .id(ids.incrementAndGet())
-            .manufacturer("Ford")
-            .model("Mustang")
-            .licencePlateNumber("XYZ987")
-            .build();
+    final Car ford = Car.builder()
+        .id(ids.incrementAndGet())
+        .manufacturer("Ford")
+        .model("Mustang")
+        .licencePlateNumber("XYZ987")
+        .build();
 
     cars.add(mazda);
     cars.add(ford);

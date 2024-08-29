@@ -10,13 +10,12 @@ public class MockInventoryClient implements InventoryClient {
 
   @Override
   public List<Car> getAllCars() {
-    var car =
-        Car.builder()
-            .id(1L)
-            .licencePlateNumber("ABC123")
-            .manufacturer("Peugeot")
-            .model("3006")
-            .build();
+    var car = Car.builder()
+        .id(1L)
+        .licencePlateNumber("ABC123")
+        .manufacturer("Peugeot")
+        .model("3006")
+        .build();
 
     return List.of(car);
   }

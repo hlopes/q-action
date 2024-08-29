@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Test;
 @QuarkusTest
 public class ReservationRepositoryTest {
 
-  @Inject ReservationsRepository repository;
+  @Inject
+  ReservationsRepository repository;
 
   @Test
   public void testCreateReservation() {
-    var reservation =
-        Reservation.builder()
-            .carId(384L)
-            .startDay(LocalDate.now().plusDays(5))
-            .endDay(LocalDate.now().plusDays(12))
-            .build();
+    var reservation = Reservation.builder()
+        .carId(384L)
+        .startDay(LocalDate.now().plusDays(5))
+        .endDay(LocalDate.now().plusDays(12))
+        .build();
 
     repository.save(reservation);
 
