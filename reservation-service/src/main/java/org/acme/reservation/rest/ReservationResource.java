@@ -34,6 +34,7 @@ public class ReservationResource {
     this.inventoryClient = inventoryClient;
     this.rentalClient = rentalClient;
     this.reservationsRepository = reservationsRepository;
+    this.securityContext = securityContext;
   }
 
   @GET
