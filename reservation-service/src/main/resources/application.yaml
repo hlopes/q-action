@@ -7,3 +7,8 @@ quarkus:
   smallrye-graphql-client:
     inventory:
       url: http://localhost:8083/graphql
+  oidc:
+    application-type: SERVICE
+  keycloak:
+    devservices:
+      shared: true
